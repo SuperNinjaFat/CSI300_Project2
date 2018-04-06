@@ -7,11 +7,11 @@ DROP TABLE IF EXISTS `favorites`;
 CREATE TABLE `favorites` (
   `idFavorites` int(11) NOT NULL,
   `Users_idUsers` int(11) NOT NULL,
-  `Posts_Posts_PrimaryKey` int(11) NOT NULL,
+  `Tweets_Tweet_PrimaryKey` int(11) NOT NULL,
   PRIMARY KEY (`idFavorites`),
   KEY `fk_Favorites_Users1_idx` (`Users_idUsers`),
-  KEY `fk_Favorites_Posts1_idx` (`Posts_Posts_PrimaryKey`),
-  CONSTRAINT `fk_Favorites_Posts1` FOREIGN KEY (`Posts_Posts_PrimaryKey`) REFERENCES `posts` (`Posts_PrimaryKey`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  KEY `fk_Favorites_Tweets1_idx` (`Tweets_Tweet_PrimaryKey`),
+  CONSTRAINT `fk_Favorites_Tweets1` FOREIGN KEY (`Tweets_Tweet_PrimaryKey`) REFERENCES `tweets` (`Tweet_PrimaryKey`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_Favorites_Users1` FOREIGN KEY (`Users_idUsers`) REFERENCES `users` (`idUsers`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -25,25 +25,11 @@ CREATE TABLE `following` (
   CONSTRAINT `fk_Following_Users2` FOREIGN KEY (`Users_idUsers_follower`) REFERENCES `users` (`idUsers`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-DROP TABLE IF EXISTS `posts`;
-CREATE TABLE `posts` (
-  `Posts_PrimaryKey` int(11) NOT NULL,
-  `Tweets_Tweet_PrimaryKey` int(11) NOT NULL,
-  `Retweet_Retweet_PrimaryKey` int(11) NOT NULL,
-  PRIMARY KEY (`Posts_PrimaryKey`),
-  KEY `fk_Tweets_Messages1_idx` (`Tweets_Tweet_PrimaryKey`),
-  KEY `fk_Tweets_Retweet1_idx` (`Retweet_Retweet_PrimaryKey`),
-  CONSTRAINT `fk_Tweets_Messages1` FOREIGN KEY (`Tweets_Tweet_PrimaryKey`) REFERENCES `tweets` (`Tweet_PrimaryKey`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `fk_Tweets_Retweet1` FOREIGN KEY (`Retweet_Retweet_PrimaryKey`) REFERENCES `retweet` (`Retweet_PrimaryKey`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
 DROP TABLE IF EXISTS `retweet`;
 CREATE TABLE `retweet` (
-  `Retweet_PrimaryKey` int(11) NOT NULL,
   `Users_idUsers` int(11) NOT NULL,
   `Tweets_Tweet_PrimaryKey` int(11) NOT NULL,
   `Date` datetime(6) DEFAULT NULL,
-  PRIMARY KEY (`Retweet_PrimaryKey`),
   KEY `fk_Retweet_Messages_idx` (`Tweets_Tweet_PrimaryKey`),
   KEY `fk_Retweet_Users1_idx` (`Users_idUsers`),
   CONSTRAINT `fk_Retweet_Messages` FOREIGN KEY (`Tweets_Tweet_PrimaryKey`) REFERENCES `tweets` (`Tweet_PrimaryKey`) ON DELETE NO ACTION ON UPDATE NO ACTION,

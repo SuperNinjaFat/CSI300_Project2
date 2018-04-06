@@ -91,13 +91,11 @@ ENGINE = InnoDB;
 -- Table `mydb`.`Retweet`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `mydb`.`Retweet` (
-  `Retweet_PrimaryKey` INT NOT NULL,
   `Users_idUsers` INT NOT NULL,
   `Tweets_Tweet_PrimaryKey` INT NOT NULL,
   `Date` DATETIME(6) NULL,
   INDEX `fk_Retweet_Messages_idx` (`Tweets_Tweet_PrimaryKey` ASC),
   INDEX `fk_Retweet_Users1_idx` (`Users_idUsers` ASC),
-  PRIMARY KEY (`Retweet_PrimaryKey`),
   CONSTRAINT `fk_Retweet_Messages`
     FOREIGN KEY (`Tweets_Tweet_PrimaryKey`)
     REFERENCES `mydb`.`Tweets` (`Tweet_PrimaryKey`)
@@ -112,46 +110,23 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `mydb`.`Posts`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`Posts` (
-  `Posts_PrimaryKey` INT NOT NULL,
-  `Tweets_Tweet_PrimaryKey` INT NOT NULL,
-  `Retweet_Retweet_PrimaryKey` INT NOT NULL,
-  INDEX `fk_Tweets_Messages1_idx` (`Tweets_Tweet_PrimaryKey` ASC),
-  INDEX `fk_Tweets_Retweet1_idx` (`Retweet_Retweet_PrimaryKey` ASC),
-  PRIMARY KEY (`Posts_PrimaryKey`),
-  CONSTRAINT `fk_Tweets_Messages1`
-    FOREIGN KEY (`Tweets_Tweet_PrimaryKey`)
-    REFERENCES `mydb`.`Tweets` (`Tweet_PrimaryKey`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_Tweets_Retweet1`
-    FOREIGN KEY (`Retweet_Retweet_PrimaryKey`)
-    REFERENCES `mydb`.`Retweet` (`Retweet_PrimaryKey`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
 -- Table `mydb`.`Favorites`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `mydb`.`Favorites` (
   `idFavorites` INT NOT NULL,
   `Users_idUsers` INT NOT NULL,
-  `Posts_Posts_PrimaryKey` INT NOT NULL,
+  `Tweets_Tweet_PrimaryKey` INT NOT NULL,
   PRIMARY KEY (`idFavorites`),
   INDEX `fk_Favorites_Users1_idx` (`Users_idUsers` ASC),
-  INDEX `fk_Favorites_Posts1_idx` (`Posts_Posts_PrimaryKey` ASC),
+  INDEX `fk_Favorites_Tweets1_idx` (`Tweets_Tweet_PrimaryKey` ASC),
   CONSTRAINT `fk_Favorites_Users1`
     FOREIGN KEY (`Users_idUsers`)
     REFERENCES `mydb`.`Users` (`idUsers`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `fk_Favorites_Posts1`
-    FOREIGN KEY (`Posts_Posts_PrimaryKey`)
-    REFERENCES `mydb`.`Posts` (`Posts_PrimaryKey`)
+  CONSTRAINT `fk_Favorites_Tweets1`
+    FOREIGN KEY (`Tweets_Tweet_PrimaryKey`)
+    REFERENCES `mydb`.`Tweets` (`Tweet_PrimaryKey`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -2206,6 +2181,3 @@ DELIMITER ;
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
-
-
-S
