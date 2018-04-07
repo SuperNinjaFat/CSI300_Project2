@@ -1,8 +1,3 @@
-DELETE FROM favorites;
-DELETE FROM following;
-DELETE FROM retweet;
-DELETE FROM tweets;
-DELETE FROM users;
 
 # Creating users
 INSERT INTO `mydb`.`users`
@@ -27,15 +22,23 @@ INSERT INTO `mydb`.`tweets`
 (`Tweet_PrimaryKey`,`Content`,`Date`,`Users_idUsers`)
 VALUES
 (03,"ffkjhalkfj Oops better delete this tweet!",NOW(),1);
+INSERT INTO `mydb`.`tweets`
+(`Tweet_PrimaryKey`,`Content`,`Date`,`Users_idUsers`)
+VALUES
+(04,"YEET.",NOW(),2);
 
 #Follow/unfollow other users
 # Super Ninja Fat follows TheAllMightyRa
 INSERT INTO `mydb`.`following`
-(`Users_idUsers_followed`,
-`Users_idUsers_follower`)
+(`Users_idUsers_followed`,`Users_idUsers_follower`)
 VALUES
-(2,
-1);
+(2,1);
+# TheAllMightyRa follows Super Ninja Fat
+INSERT INTO `mydb`.`following`
+(`Users_idUsers_followed`,`Users_idUsers_follower`)
+VALUES
+(1,2);
+
 
 #Retweet
 # Super Ninja Fat retweets his own first tweet
@@ -55,7 +58,7 @@ VALUES
 (1,02,NOW());
 
 #Delete a tweet
-# Delete Super Ninja Fat's third tweet
+# Delete Super Ninja Fat's third tweet # cascade
 DELETE FROM tweets
 WHERE Tweet_PrimaryKey = 3;
 

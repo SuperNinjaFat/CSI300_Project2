@@ -1,40 +1,30 @@
 
-/*
-# Return tweet and possible retweet data for a specific tweet
-SELECT
-    t.Tweet_PrimaryKey, t.Users_idUsers, t.Content, t.`Date`
-FROM
-    tweets AS t
-LEFT OUTER JOIN retweet AS rt ON rt.Tweets_Tweet_PrimaryKey = t.Tweet_PrimaryKey
-WHERE
-    t.Tweet_PrimaryKey = 01;
-*/
-
-
 #see a user’s timeline (in chronological order - the timeline is the combination of tweets/retweets of all users that one follows)
 # Super Ninja Fat's timeline (He follows TheAllMightyRa)
-select * from (
-    select u.Username, t.Content, t.`Date` from tweets as t
-INNER JOIN
-    users u
-ON t.Users_idUsers = u.idUsers
-where Users_idUsers = 1
-    union
-    select u.Username, t.Content, rt.`Date` from tweets as t
-INNER JOIN
-    users u
-ON t.Users_idUsers = u.idUsers
-    inner join retweet as rt on rt.Tweets_Tweet_PrimaryKey = t.Tweet_PrimaryKey where rt.Users_idUsers = 1)
-a order by `Date` desc;
-# Same code but focusing on TheAllMightyRa (He follows Super Ninja Fat)
+select Content as 'Tweet/Retweet', t.`Date`
+	from tweets t join
+		(select Users_idUsers_followed from following where Users_idUsers_follower = 1) a on t.Users_idUsers = a.Users_idUsers_followed
+        join users u on u.idUsers = a.Users_idUsers_followed
+union
+select Content, rt.`Date`
+	from retweet rt join (select Users_idUsers_followed from following where Users_idUsers_follower = 1) a on rt.Users_idUsers = a.Users_idUsers_followed
+    join tweets t on rt.Tweets_Tweet_PrimaryKey = t.Tweet_PrimaryKey
+    join users u on u.idUsers = rt.Users_idUsers
+order by `date` desc;
 
-
+# TheAllMightyRa (He follows Super Ninja Fat)
+select Content as 'Tweet/Retweet', t.`Date`
+	from tweets t join
+		(select Users_idUsers_followed from following where Users_idUsers_follower = 2) a on t.Users_idUsers = a.Users_idUsers_followed
+        join users u on u.idUsers = a.Users_idUsers_followed
+union
+select Content, rt.`Date`
+	from retweet rt join (select Users_idUsers_followed from following where Users_idUsers_follower = 2) a on rt.Users_idUsers = a.Users_idUsers_followed
+    join tweets t on rt.Tweets_Tweet_PrimaryKey = t.Tweet_PrimaryKey
+    join users u on u.idUsers = rt.Users_idUsers
+order by `date` desc;
 
 #See a user’s favorited tweets
-/*SELECT u.Username, t.Content, t.`Date` from tweets as t
-INNER JOIN
-    users u
-ON t.Users_idUsers = u.idUsers where t.Users_idUsers = 1;*/
 # View TheAllMightyRa's Favorites:
 Select u.Username, t.Content, t.`Date` from tweets as t
 INNER JOIN
@@ -82,7 +72,7 @@ GROUP BY
     t.Tweet_PrimaryKey;
 
 #View how many followers a user has
-# TheAllMightyRa is only followed by Super Ninja Fat
+# TheAllMightyRa is only followed by Super Ninja Fat and Super Ninja Fat is only followed by TheAllMightyRa
 SELECT
     u.Username,
     count(*)
@@ -93,7 +83,7 @@ GROUP BY
     u.Username;
 
 #View how many users one is following.
-# Super Ninja Fat is following only TheAllMightyRa
+# Super Ninja Fat is following only TheAllMightyRa and TheAllMightyRa is following only Super Ninja Fat
 SELECT
     u.Username,
     count(*)
@@ -103,3 +93,10 @@ INNER JOIN following AS fo ON fo.Users_idUsers_follower = u.idUsers
 GROUP BY
     u.Username;
 
+    
+    
+    
+    
+    
+    
+    
